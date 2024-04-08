@@ -38,7 +38,7 @@ def show_project():
 
   
 if __name__ == "__main__":
-  excel_folder = "excel_files"  # Adjust if needed
+  excel_folder = "data/excel_files"  # Adjust if needed
   projects = {}
 
   for filename in os.listdir(excel_folder):
