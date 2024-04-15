@@ -10,6 +10,10 @@ projects = {}
 # Get the list of files in the root directory
 root_files = os.listdir()
 
+# Print out the filenames in the root directory for debugging purposes
+print("Filenames in root directory:")
+print(root_files)
+
 # Extract project names from Excel files in the root directory
 project_names = [os.path.splitext(filename)[0] for filename in root_files if filename.endswith(".xlsx")]
 
