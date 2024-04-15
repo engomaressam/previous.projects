@@ -29,6 +29,9 @@ def show_project():
         selected_project = request.form["project"]
         print(f"Selected project: {selected_project}")  # Debug: Print selected project name
 
+        # Debug: Print the keys of the projects dictionary
+        print(f"Available projects: {list(projects.keys())}")
+
         if selected_project in projects:
             project_table = projects[selected_project]  # Get project data
             print(f"Project data: {project_table}")  # Debug: Print project data
@@ -38,6 +41,7 @@ def show_project():
             return render_template("forms.html", message="Project not found!")
     else:
         return render_template("forms.html", message="Please select a project.")
+
 
 if __name__ == "__main__":
     # Read Excel files and store data in the projects dictionary
