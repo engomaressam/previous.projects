@@ -23,13 +23,14 @@ def index():
 def show_project():
     if 'project' in request.form:
         selected_project = request.form["project"]
-        print(selected_project)  # Debug: Print selected project name
+        print(f"Selected project: {selected_project}")  # Debug: Print selected project name
 
         if selected_project in projects:
             project_table = projects[selected_project]  # Get project data
+            print(f"Project data: {project_table}")  # Debug: Print project data
             return render_template("forms.html", project_table=project_table.to_html())
         else:
-            print(projects.keys())  # Debug: Print project keys in dictionary
+            print(f"Available projects: {list(projects.keys())}")  # Debug: Print available project names
             return render_template("forms.html", message="Project not found!")
     else:
         return render_template("forms.html", message="Please select a project.")
@@ -43,7 +44,7 @@ if __name__ == "__main__":
             file_path = os.path.join(os.getcwd(), filename)  # Construct full path
             try:
                 projects[project_name] = pd.read_excel(file_path)
-                print(f"Successfully loaded Excel file for project: {project_name}")
+                print(f"Successfully loaded Excel file for project: {project_name}")  # Debug: Print successful loading
             except FileNotFoundError:
                 print(f"Warning: Excel file not found for project: {project_name}")
             except Exception as e:
