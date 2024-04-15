@@ -4,6 +4,9 @@ import os
 import webbrowser
 from threading import Timer
 
+print("Current working directory:", os.getcwd())  # Add this line to print the current working directory
+
+
 # Define a dictionary to store project data (alternative to file system)
 projects = {}
 
