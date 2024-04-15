@@ -1,30 +1,24 @@
 from flask import Flask, render_template, request
 import pandas as pd
 import os
-import webbrowser
-from threading import Timer
 
-print("Current working directory:", os.getcwd())  # Add this line to print the current working directory
+print("Current working directory:", os.getcwd())  # Print the current working directory
 
 
 # Define a dictionary to store project data (alternative to file system)
 projects = {}
 
-# Get the list of files in the root directory
-root_files = os.listdir()
+# Define the filename of the Excel file to load
+file_to_load = "Ain Shams Bridge.xlsx"
 
-# Print out the filenames in the root directory for debugging purposes
-print("Filenames in root directory:")
-print(root_files)
-
-# Extract project names from Excel files in the root directory
-project_names = [os.path.splitext(filename)[0] for filename in root_files if filename.endswith(".xlsx")]
+# Print out the filename to be loaded
+print("Filename to load:", file_to_load)
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("index.html", project_names=project_names)
+    return render_template("index.html", project_names=[])
 
 @app.route("/project", methods=["POST"])
 def show_project():
@@ -47,22 +41,17 @@ def show_project():
 
 
 if __name__ == "__main__":
-    projects = {}
+    # Load the Excel file
+    try:
+        file_path = os.path.join(os.getcwd(), file_to_load)  # Use os.getcwd() to get the current working directory
+        projects[file_to_load] = pd.read_excel(file_path)
+        print(f"Successfully loaded Excel file: {file_to_load}")
+    except FileNotFoundError:
+        print(f"Warning: Excel file not found: {file_to_load}")
+    except Exception as e:
+        print(f"Error loading Excel file: {file_to_load}: {e}")
 
-    print("Filenames in root directory:")
-    for filename in os.listdir():
-        print(filename)
-        if filename.endswith(".xlsx"):
-            project_name = os.path.splitext(filename)[0]
-            file_path = os.path.join(os.getcwd(), filename)  # Use os.getcwd() to get the current working directory
-            try:
-                projects[project_name] = pd.read_excel(file_path)
-                print(f"Successfully loaded Excel file for project: {project_name}")
-            except FileNotFoundError:
-                print(f"Warning: Excel file not found for project: {project_name}")
-            except Exception as e:
-                print(f"Error loading Excel file for project {project_name}: {e}")
-
+    # Print loaded project names
     print("Projects loaded:", projects.keys())
 
     # Function to open the browser
