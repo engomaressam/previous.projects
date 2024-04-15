@@ -41,18 +41,25 @@ def show_project():
 
 
 if __name__ == "__main__":
-    # Load the Excel file
-    try:
-        file_path = os.path.join(os.getcwd(), file_to_load)  # Use os.getcwd() to get the current working directory
-        projects[file_to_load] = pd.read_excel(file_path)
-        print(f"Successfully loaded Excel file: {file_to_load}")
-    except FileNotFoundError:
-        print(f"Warning: Excel file not found: {file_to_load}")
-    except Exception as e:
-        print(f"Error loading Excel file: {file_to_load}: {e}")
+    projects = {}
 
-    # Print loaded project names
-    print("Projects loaded:", projects.keys())
+    print("Current working directory:", os.getcwd())  # Add this line to print the current working directory
+
+    # Get the filename to load from user input or command line argument
+    filename = "Ain Shams Bridge.xlsx"
+
+    # Attempt to load the Excel file
+    file_path = os.path.join(os.getcwd(), filename)  # Use os.getcwd() to get the current working directory
+    try:
+        projects[filename] = pd.read_excel(file_path)
+        print(f"Successfully loaded Excel file: {filename}")
+    except FileNotFoundError:
+        print(f"Error: Excel file not found: {filename}")
+    except Exception as e:
+        print(f"Error loading Excel file: {e}")
+
+    # Print the loaded project data (for debugging)
+    print(f"Loaded project data: {projects.get(filename)}")
 
     # Function to open the browser
     def open_browser():
