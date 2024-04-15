@@ -69,6 +69,7 @@ if __name__ == "__main__":
 
 
 
+
     # Function to open the browser
     def open_browser():
         if not os.environ.get("WERKZEUG_RUN_MAIN"):
