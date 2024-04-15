@@ -55,6 +55,7 @@ if __name__ == "__main__":
         if filename.endswith(".xlsx"):
             project_name = os.path.splitext(filename)[0]
             file_path = os.path.join(os.getcwd(), filename)  # Use os.getcwd() to get the current working directory
+            print(f"Attempting to load Excel file: {file_path}")  # Debug: Print the file path being attempted
             try:
                 projects[project_name] = pd.read_excel(file_path)
                 print(f"Successfully loaded Excel file for project: {project_name}")
@@ -62,8 +63,9 @@ if __name__ == "__main__":
                 print(f"Warning: Excel file not found for project: {project_name}")
             except Exception as e:
                 print(f"Error loading Excel file for project {project_name}: {e}")
-
+    
     print("Projects loaded:", projects.keys())
+
 
     # Function to open the browser
     def open_browser():
