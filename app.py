@@ -51,7 +51,7 @@ if __name__ == "__main__":
         print(filename)
         if filename.endswith(".xlsx"):
             project_name = os.path.splitext(filename)[0]
-            file_path = os.path.join(excel_folder, filename)
+            file_path = os.path.join(os.getcwd(), filename)  # Use os.getcwd() to get the current working directory
             try:
                 projects[project_name] = pd.read_excel(file_path)
                 print(f"Successfully loaded Excel file for project: {project_name}")
