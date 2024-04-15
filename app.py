@@ -7,7 +7,7 @@ from threading import Timer
 # Define a list to store project data (alternative to file system)
 projects = {}
 
-excel_folder = "data/excel_files"  # Adjust if needed
+excel_folder = "excel_files"
 project_names = []
 
 for filename in os.listdir(excel_folder):
@@ -38,7 +38,7 @@ def show_project():
 
   
 if __name__ == "__main__":
-  excel_folder = "data/excel_files"  # Adjust if needed
+  excel_folder = "excel_files"  # Adjust if needed
   projects = {}
 
   for filename in os.listdir(excel_folder):
@@ -49,6 +49,7 @@ if __name__ == "__main__":
         projects[project_name] = pd.read_excel(file_path)
       except FileNotFoundError:
         print(f"Warning: Excel file not found for project: {project_name}")
+
 
   def open_browser():
     if not os.environ.get("WERKZEUG_RUN_MAIN"):
