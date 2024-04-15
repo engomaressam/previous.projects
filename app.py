@@ -44,19 +44,23 @@ def show_project():
 
 
 if __name__ == "__main__":
-    # Read Excel files and store data in the projects dictionary
     projects = {}
-    for filename in root_files:
-        if filename.endswith(".xlsx"):  # Check for Excel files
+
+    print("Filenames in root directory:")
+    for filename in os.listdir():
+        print(filename)
+        if filename.endswith(".xlsx"):
             project_name = os.path.splitext(filename)[0]
-            file_path = os.path.join(os.getcwd(), filename)  # Construct full path
+            file_path = os.path.join(excel_folder, filename)
             try:
                 projects[project_name] = pd.read_excel(file_path)
-                print(f"Successfully loaded Excel file for project: {project_name}")  # Debug: Print successful loading
+                print(f"Successfully loaded Excel file for project: {project_name}")
             except FileNotFoundError:
                 print(f"Warning: Excel file not found for project: {project_name}")
             except Exception as e:
                 print(f"Error loading Excel file for project {project_name}: {e}")
+
+    print("Projects loaded:", projects.keys())
 
     # Function to open the browser
     def open_browser():
