@@ -7,7 +7,7 @@ from threading import Timer
 # Define a list to store project data (alternative to file system)
 projects = {}
 
-excel_folder = os.path.join("path", "to", "excel_files")
+excel_folder = "excel_files"
 project_names = []
 
 for filename in os.listdir(excel_folder):
@@ -36,9 +36,10 @@ def show_project():
     else:
         return render_template("forms.html", message="Please select a project.")
 
+
   
 if __name__ == "__main__":
-  excel_folder = os.path.join("path", "to", "excel_files")
+  excel_folder = "excel_files"
   projects = {}
 
   for filename in os.listdir(excel_folder):
