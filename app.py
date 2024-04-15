@@ -4,16 +4,14 @@ import os
 import webbrowser
 from threading import Timer
 
-# Define a list to store project data (alternative to file system)
+# Define a dictionary to store project data (alternative to file system)
 projects = {}
 
-excel_folder = "excel_files"
-project_names = []
+# Get the list of files in the root directory
+root_files = os.listdir()
 
-for filename in os.listdir(excel_folder):
-    if filename.endswith(".xlsx"):  # Check for Excel files
-        project_name = os.path.splitext(filename)[0]  # Extract name
-        project_names.append(project_name)
+# Extract project names from Excel files in the root directory
+project_names = [os.path.splitext(filename)[0] for filename in root_files if filename.endswith(".xlsx")]
 
 app = Flask(__name__)
 
@@ -36,29 +34,25 @@ def show_project():
     else:
         return render_template("forms.html", message="Please select a project.")
 
-
-  
 if __name__ == "__main__":
-  excel_folder = "excel_files"
-  projects = {}
+    # Read Excel files and store data in the projects dictionary
+    projects = {}
+    for filename in root_files:
+        if filename.endswith(".xlsx"):  # Check for Excel files
+            project_name = os.path.splitext(filename)[0]
+            file_path = os.path.join(os.getcwd(), filename)  # Construct full path
+            try:
+                projects[project_name] = pd.read_excel(file_path)
+                print(f"Successfully loaded Excel file for project: {project_name}")
+            except FileNotFoundError:
+                print(f"Warning: Excel file not found for project: {project_name}")
+            except Exception as e:
+                print(f"Error loading Excel file for project {project_name}: {e}")
 
-  for filename in os.listdir(excel_folder):
-    if filename.endswith(".xlsx"):  # Check for Excel files
-        project_name = filename.split(".")[0]
-        file_path = os.path.join(excel_folder, filename)  # Construct full path
-        try:
-            projects[project_name] = pd.read_excel(file_path)
-            print(f"Successfully loaded Excel file for project: {project_name}")
-        except FileNotFoundError:
-            print(f"Warning: Excel file not found for project: {project_name}")
-        except Exception as e:
-            print(f"Error loading Excel file for project {project_name}: {e}")
+    # Function to open the browser
+    def open_browser():
+        if not os.environ.get("WERKZEUG_RUN_MAIN"):
+            webbrowser.open_new('http://127.0.0.1:5000/')
 
-
-  def open_browser():
-    if not os.environ.get("WERKZEUG_RUN_MAIN"):
-        webbrowser.open_new('http://127.0.0.1:5000/')
-
-if __name__ == '__main__':
     Timer(1, open_browser).start()
     app.run(debug=True)
