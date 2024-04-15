@@ -43,12 +43,15 @@ if __name__ == "__main__":
 
   for filename in os.listdir(excel_folder):
     if filename.endswith(".xlsx"):  # Check for Excel files
-      project_name = filename.split(".")[0]
-      file_path = os.path.join(excel_folder, filename)  # Construct full path
-      try:
-        projects[project_name] = pd.read_excel(file_path)
-      except FileNotFoundError:
-        print(f"Warning: Excel file not found for project: {project_name}")
+        project_name = filename.split(".")[0]
+        file_path = os.path.join(excel_folder, filename)  # Construct full path
+        try:
+            projects[project_name] = pd.read_excel(file_path)
+            print(f"Successfully loaded Excel file for project: {project_name}")
+        except FileNotFoundError:
+            print(f"Warning: Excel file not found for project: {project_name}")
+        except Exception as e:
+            print(f"Error loading Excel file for project {project_name}: {e}")
 
 
   def open_browser():
