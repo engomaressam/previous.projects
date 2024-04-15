@@ -7,7 +7,7 @@ from threading import Timer
 # Define a list to store project data (alternative to file system)
 projects = {}
 
-excel_folder = "data/excel_files"
+excel_folder = "excel_files"
 project_names = []
 
 for filename in os.listdir(excel_folder):
@@ -38,7 +38,7 @@ def show_project():
 
   
 if __name__ == "__main__":
-  excel_folder = "data/excel_files"
+  excel_folder = "excel_files"
   projects = {}
 
   for filename in os.listdir(excel_folder):
