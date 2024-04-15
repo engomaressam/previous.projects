@@ -59,12 +59,14 @@ if __name__ == "__main__":
             try:
                 projects[project_name] = pd.read_excel(file_path)
                 print(f"Successfully loaded Excel file for project: {project_name}")
+                print(f"Project data: {projects[project_name]}")  # Debug: Print project data
             except FileNotFoundError:
                 print(f"Warning: Excel file not found for project: {project_name}")
             except Exception as e:
                 print(f"Error loading Excel file for project {project_name}: {e}")
     
     print("Projects loaded:", projects.keys())
+
 
 
     # Function to open the browser
