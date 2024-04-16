@@ -1,23 +1,16 @@
 from flask import Flask, render_template, request
 import pandas as pd
-import os
-import webbrowser
-from threading import Timer
 
-print("Current working directory:", os.getcwd())  # Add this line to print the current working directory
-
-# Define a dictionary to store project data (alternative to file system)
+# Define a list to store project data (alternative to file system)
 projects = {}
 
-# Get the list of files in the root directory
-root_files = os.listdir()
+excel_folder = "excel_files"
+project_names = []
 
-# Print out the filenames in the root directory for debugging purposes
-print("Filenames in root directory:")
-print(root_files)
-
-# Extract project names from Excel files in the root directory
-project_names = [os.path.splitext(filename)[0] for filename in root_files if filename.endswith(".xlsx")]
+for filename in os.listdir(excel_folder):
+    if filename.endswith(".xlsx"):  # Check for Excel files
+        project_name = os.path.splitext(filename)[0]  # Extract name
+        project_names.append(project_name)
 
 app = Flask(__name__)
 
@@ -29,48 +22,39 @@ def index():
 def show_project():
     if 'project' in request.form:
         selected_project = request.form["project"]
-        print(f"Selected project: {selected_project}")  # Debug: Print selected project name
-
-        # Debug: Print the keys of the projects dictionary
-        print(f"Available projects: {list(projects.keys())}")
+        print(selected_project)  # Debug: Print selected project name
 
         if selected_project in projects:
             project_table = projects[selected_project]  # Get project data
-            print(f"Project data: {project_table}")  # Debug: Print project data
             return render_template("forms.html", project_table=project_table.to_html())
         else:
-            print(f"Available projects: {list(projects.keys())}")  # Debug: Print available project names
+            print(projects.keys())  # Debug: Print project keys in dictionary
             return render_template("forms.html", message="Project not found!")
     else:
         return render_template("forms.html", message="Please select a project.")
 
+  
+if __name__ == "__main__":
+  excel_folder = "excel_files"  # Adjust if needed
+  projects = {}
+
+  for filename in os.listdir(excel_folder):
+    if filename.endswith(".xlsx"):  # Check for Excel files
+      project_name = filename.split(".")[0]
+      file_path = os.path.join(excel_folder, filename)  # Construct full path
+      try:
+        projects[project_name] = pd.read_excel(file_path)
+      except FileNotFoundError:
+        print(f"Warning: Excel file not found for project: {project_name}")
+
+import os
+from threading import Timer
+import webbrowser
+
+def open_browser():
+    if not os.environ.get("WERKZEUG_RUN_MAIN"):
+        webbrowser.open_new('http://127.0.0.1:1222/')
 
 if __name__ == "__main__":
-    projects = {}
-
-    print("Filenames in root directory:")
-    for filename in os.listdir():
-        print(filename)
-        if filename.endswith(".xlsx"):
-            project_name = os.path.splitext(filename)[0]
-            file_path = os.path.join(os.getcwd(), filename)  # Use os.getcwd() to get the current working directory
-            print(f"Attempting to load Excel file: {file_path}")  # Debug: Print the file path being attempted
-            try:
-                projects[project_name] = pd.read_excel(file_path)
-                print(f"Successfully loaded Excel file for project: {project_name}")
-                print(f"Project data: {projects[project_name]}")  # Debug: Print project data
-            except FileNotFoundError:
-                print(f"Warning: Excel file not found for project: {project_name}")
-            except Exception as e:
-                print(f"Error loading Excel file for project {project_name}: {e}")
-    
-    print("Projects loaded:", projects.keys())
-
-
-    # Function to open the browser
-    def open_browser():
-        if not os.environ.get("WERKZEUG_RUN_MAIN"):
-            webbrowser.open_new('http://127.0.0.1:5000/')
-
     Timer(1, open_browser).start()
-    app.run(debug=True)
+    app.run_server(debug=True, port=1222)
