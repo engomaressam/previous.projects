@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request
 import pandas as pd
+import os
+from threading import Timer
+import webbrowser
 
 # Define a list to store project data (alternative to file system)
 projects = {}
@@ -47,9 +50,7 @@ if __name__ == "__main__":
       except FileNotFoundError:
         print(f"Warning: Excel file not found for project: {project_name}")
 
-import os
-from threading import Timer
-import webbrowser
+
 
 def open_browser():
     if not os.environ.get("WERKZEUG_RUN_MAIN"):
