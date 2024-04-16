@@ -6,7 +6,6 @@ from threading import Timer
 
 print("Current working directory:", os.getcwd())  # Add this line to print the current working directory
 
-
 # Define a dictionary to store project data (alternative to file system)
 projects = {}
 
@@ -66,8 +65,6 @@ if __name__ == "__main__":
                 print(f"Error loading Excel file for project {project_name}: {e}")
     
     print("Projects loaded:", projects.keys())
-
-
 
 
     # Function to open the browser
